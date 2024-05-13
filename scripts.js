@@ -58,6 +58,13 @@ function updateTheme() {
  document.querySelector("[data-settings-theme]").value = themeValue;
 }
 
+function updateListButton() {
+ const remaining = Math.max(matches.length - page * BOOKS_PER_PAGE, 0);
+ const button = document.querySelector("[data-list-button]");
+ button.innerText = `Show more (${remaining})`;
+ button.disabled = remaining <= 0;
+}
+
 function renderBooks() {
  const fragment = document.createDocumentFragment();
  for (const book of matches.slice(
@@ -69,4 +76,11 @@ function renderBooks() {
  }
  document.querySelector("[data-list-items]").innerHTML = "";
  document.querySelector("[data-list-items]").appendChild(fragment);
+}
+
+function updateListButton() {
+ const remaining = Math.max(matches.length - page * BOOKS_PER_PAGE, 0);
+ const button = document.querySelector("[data-list-button]");
+ button.innerText = `Show more (${remaining})`;
+ button.disabled = remaining <= 0;
 }
