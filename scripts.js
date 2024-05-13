@@ -28,3 +28,13 @@ function populateGenres() {
   genreSelect.appendChild(option);
  }
 }
+function populateAuthors() {
+ const authorSelect = document.querySelector("[data-search-authors]");
+ authorSelect.innerHTML = `<option value="any">All Authors</option>`;
+ for (const [id, name] of Object.entries(authors)) {
+  const option = document.createElement("option");
+  option.value = id;
+  option.innerText = name;
+  authorSelect.appendChild(option);
+ }
+}
