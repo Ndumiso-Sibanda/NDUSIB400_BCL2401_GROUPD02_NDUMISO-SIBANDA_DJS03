@@ -18,6 +18,7 @@ function createBookElement(book) {
     `;
  return element;
 }
+
 function populateGenres() {
  const genreSelect = document.querySelector("[data-search-genres]");
  genreSelect.innerHTML = `<option value="any">All Genres</option>`;
@@ -28,6 +29,7 @@ function populateGenres() {
   genreSelect.appendChild(option);
  }
 }
+
 function populateAuthors() {
  const authorSelect = document.querySelector("[data-search-authors]");
  authorSelect.innerHTML = `<option value="any">All Authors</option>`;
@@ -38,6 +40,7 @@ function populateAuthors() {
   authorSelect.appendChild(option);
  }
 }
+
 function updateTheme() {
  const themeValue =
   window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
@@ -53,4 +56,17 @@ function updateTheme() {
   themeValue === "night" ? "10, 10, 20" : "255, 255, 255"
  );
  document.querySelector("[data-settings-theme]").value = themeValue;
+}
+
+function renderBooks() {
+ const fragment = document.createDocumentFragment();
+ for (const book of matches.slice(
+  (page - 1) * BOOKS_PER_PAGE,
+  page * BOOKS_PER_PAGE
+ )) {
+  const element = createBookElement(book);
+  fragment.appendChild(element);
+ }
+ document.querySelector("[data-list-items]").innerHTML = "";
+ document.querySelector("[data-list-items]").appendChild(fragment);
 }
