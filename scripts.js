@@ -38,3 +38,19 @@ function populateAuthors() {
   authorSelect.appendChild(option);
  }
 }
+function updateTheme() {
+ const themeValue =
+  window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
+   ? "night"
+   : "day";
+ const root = document.documentElement;
+ root.style.setProperty(
+  "--color-dark",
+  themeValue === "night" ? "255, 255, 255" : "10, 10, 20"
+ );
+ root.style.setProperty(
+  "--color-light",
+  themeValue === "night" ? "10, 10, 20" : "255, 255, 255"
+ );
+ document.querySelector("[data-settings-theme]").value = themeValue;
+}
