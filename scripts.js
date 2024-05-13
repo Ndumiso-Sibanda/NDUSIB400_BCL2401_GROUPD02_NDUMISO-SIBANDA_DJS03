@@ -18,3 +18,13 @@ function createBookElement(book) {
     `;
  return element;
 }
+function populateGenres() {
+ const genreSelect = document.querySelector("[data-search-genres]");
+ genreSelect.innerHTML = `<option value="any">All Genres</option>`;
+ for (const [id, name] of Object.entries(genres)) {
+  const option = document.createElement("option");
+  option.value = id;
+  option.innerText = name;
+  genreSelect.appendChild(option);
+ }
+}
