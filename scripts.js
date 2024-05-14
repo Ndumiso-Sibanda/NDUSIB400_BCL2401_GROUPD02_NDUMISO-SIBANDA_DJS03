@@ -154,3 +154,16 @@ document
   updateListButton();
   document.querySelector("[data-search-overlay]").open = false;
  });
+
+document
+ .querySelector("[data-list-button]")
+ .addEventListener("click", handleShowMore);
+document
+ .querySelector("[data-list-items]")
+ .addEventListener("click", handleBookClick);
+
+populateGenres();
+populateAuthors();
+updateTheme();
+renderBooks();
+updateListButton();
