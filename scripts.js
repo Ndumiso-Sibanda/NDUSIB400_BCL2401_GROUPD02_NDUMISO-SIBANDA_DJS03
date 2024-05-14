@@ -135,3 +135,22 @@ document
   updateTheme(theme);
   document.querySelector("[data-settings-overlay]").open = false;
  });
+
+document
+ .querySelector("[data-search-form]")
+ .addEventListener("submit", (event) => {
+  event.preventDefault();
+  const formData = new FormData(event.target);
+  const filters = Object.fromEntries(formData);
+  matches = books.filter(
+   (book) =>
+    (filters.title.trim() === "" ||
+     book.title.toLowerCase().includes(filters.title.toLowerCase())) &&
+    (filters.author === "any" || book.author === filters.author) &&
+    (filters.genre === "any" || book.genres.includes(filters.genre))
+  );
+  page = 1;
+  renderBooks();
+  updateListButton();
+  document.querySelector("[data-search-overlay]").open = false;
+ });
