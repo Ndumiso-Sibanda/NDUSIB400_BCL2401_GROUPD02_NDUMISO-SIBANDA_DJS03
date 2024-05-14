@@ -83,3 +83,20 @@ function handleShowMore() {
  renderBooks();
  updateListButton();
 }
+
+function handleBookClick(event) {
+ const target = event.target;
+ const previewId = target.closest(".preview")?.getAttribute("data-preview");
+ if (!previewId) return;
+ const activeBook = books.find((book) => book.id === previewId);
+ if (!activeBook) return;
+ document.querySelector("[data-list-active]").open = true;
+ document.querySelector("[data-list-blur]").src = activeBook.image;
+ document.querySelector("[data-list-image]").src = activeBook.image;
+ document.querySelector("[data-list-title]").innerText = activeBook.title;
+ document.querySelector("[data-list-subtitle]").innerText = `${
+  authors[activeBook.author]
+ } (${new Date(activeBook.published).getFullYear()})`;
+ document.querySelector("[data-list-description]").innerText =
+  activeBook.description;
+}
