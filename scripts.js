@@ -125,3 +125,13 @@ document
 document.querySelector("[data-list-close]").addEventListener("click", () => {
  document.querySelector("[data-list-active]").open = false;
 });
+
+document
+ .querySelector("[data-settings-form]")
+ .addEventListener("submit", (event) => {
+  event.preventDefault();
+  const formData = new FormData(event.target);
+  const { theme } = Object.fromEntries(formData);
+  updateTheme(theme);
+  document.querySelector("[data-settings-overlay]").open = false;
+ });
