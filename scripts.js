@@ -67,14 +67,14 @@ function updateListButton() {
 
 function renderBooks() {
  const fragment = document.createDocumentFragment();
- for (const book of matches.slice(
-  (page - 1) * BOOKS_PER_PAGE,
-  page * BOOKS_PER_PAGE
- )) {
+ const startIndex = (page - 1) * BOOKS_PER_PAGE;
+ const endIndex = page * BOOKS_PER_PAGE;
+ for (let i = startIndex; i < endIndex && i < matches.length; i++) {
+  const book = matches[i];
   const element = createBookElement(book);
   fragment.appendChild(element);
  }
- document.querySelector("[data-list-items]").innerHTML = "";
+
  document.querySelector("[data-list-items]").appendChild(fragment);
 }
 
