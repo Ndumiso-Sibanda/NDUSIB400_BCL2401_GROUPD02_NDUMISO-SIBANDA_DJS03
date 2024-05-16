@@ -41,21 +41,20 @@ function populateAuthors() {
  }
 }
 
-function updateTheme() {
- const themeValue =
-  window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
-   ? "night"
-   : "day";
- const root = document.documentElement;
- root.style.setProperty(
+const themeValue =
+ window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
+  ? "night"
+  : "day";
+function updateTheme(theme) {
+ const isNight = theme === "night";
+ document.documentElement.style.setProperty(
   "--color-dark",
-  themeValue === "night" ? "255, 255, 255" : "10, 10, 20"
+  isNight ? "255, 255, 255" : "10, 10, 20"
  );
- root.style.setProperty(
+ document.documentElement.style.setProperty(
   "--color-light",
-  themeValue === "night" ? "10, 10, 20" : "255, 255, 255"
+  isNight ? "10, 10, 20" : "255, 255, 255"
  );
- document.querySelector("[data-settings-theme]").value = themeValue;
 }
 
 function updateListButton() {
@@ -80,8 +79,8 @@ function renderBooks() {
 
 function handleShowMore() {
  page += 1;
- renderBooks();
  updateListButton();
+ renderBooks();
 }
 
 function handleBookClick(event) {
@@ -90,7 +89,8 @@ function handleBookClick(event) {
  if (!previewId) return;
  const activeBook = books.find((book) => book.id === previewId);
  if (!activeBook) return;
- document.querySelector("[data-list-active]").open = true;
+ document.querySelector("[data-list-active]").open = false;
+
  document.querySelector("[data-list-blur]").src = activeBook.image;
  document.querySelector("[data-list-image]").src = activeBook.image;
  document.querySelector("[data-list-title]").innerText = activeBook.title;
@@ -132,8 +132,9 @@ document
   event.preventDefault();
   const formData = new FormData(event.target);
   const { theme } = Object.fromEntries(formData);
-  updateTheme(theme);
-  document.querySelector("[data-settings-overlay]").open = false;
+  updateTheme(themeValue);
+
+  document.querySelector("[data-settings-theme]").value = themeValue;
  });
 
 document
