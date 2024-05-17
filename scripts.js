@@ -146,6 +146,7 @@ document
   const { theme } = Object.fromEntries(formData);
   updateTheme(theme);
   document.querySelector("[data-settings-theme]").value = theme;
+  document.querySelector("[data-settings-overlay]").open = false;
  });
 
 // Function to filter books based on search critiria
