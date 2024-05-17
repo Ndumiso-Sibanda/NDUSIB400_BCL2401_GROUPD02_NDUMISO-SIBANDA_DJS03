@@ -133,9 +133,8 @@ document
   event.preventDefault();
   const formData = new FormData(event.target);
   const { theme } = Object.fromEntries(formData);
-  updateTheme(themeValue);
-
-  document.querySelector("[data-settings-theme]").value = themeValue;
+  updateTheme(theme);
+  document.querySelector("[data-settings-theme]").value = theme;
  });
 
 document
