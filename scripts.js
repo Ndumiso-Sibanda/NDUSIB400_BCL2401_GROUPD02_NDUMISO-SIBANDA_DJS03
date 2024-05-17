@@ -90,7 +90,7 @@ function handleBookClick(event) {
  if (!previewId) return;
  const activeBook = books.find((book) => book.id === previewId);
  if (!activeBook) return;
- document.querySelector("[data-list-active]").open = false;
+ document.querySelector("[data-list-active]").open = true;
 
  document.querySelector("[data-list-blur]").src = activeBook.image;
  document.querySelector("[data-list-image]").src = activeBook.image;
