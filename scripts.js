@@ -1,43 +1,37 @@
-import { books, authors, genres, BOOKS_PER_PAGE } from "./data.js"; //Fetches data from the data file.
+import { books, authors, genres, BOOKS_PER_PAGE } from "./data.js"; // Import data from the data file.
 
-let page = 1; //This variable keeps track of the page number.
-let matches = books; //To store the filtered book list.
+let page = 1; // Tracks the current page number.
+let matches = books; // Stores the filtered book list.
 
-//Function that makes the books available so the element below can display them.
+// Renders the books on the screen.
 function renderBooks(books) {
   const fragment = document.createDocumentFragment();
   books.forEach((book) => {
-    //Loops through the book list and creates a book element for each book
     const element = createBookElement(book);
     fragment.appendChild(element);
   });
   document.querySelector("[data-list-items]").appendChild(fragment);
-  showMore(); //Calls this function to update the "Show more" button.
+  showMore(); // Updates the "Show more" button.
 }
 
-//Creates element to display the books on screen as a button with and image, title and author.
+// Creates a book element with an image, title, and author.
 function createBookElement({ author, id, image, title }) {
   const element = document.createElement("button");
   element.classList = "preview";
   element.setAttribute("data-preview", id);
 
   element.innerHTML = `
-        <img
-            class="preview__image"
-            src="${image}"
-        />
+    <img class="preview__image" src="${image}" />
+    <div class="preview__info">
+      <h3 class="preview__title">${title}</h3>
+      <div class="preview__author">${authors[author]}</div>
+    </div>
+  `;
 
-        <div class="preview__info">
-            <h3 class="preview__title">${title}</h3>
-            <div class="preview__author">${authors[author]}</div>
-        </div>
-    `;
-
-  return element; //Return to provide the created element back to the caller for flexible use
+  return element; // Returns the created element.
 }
 
-//Gives out the list of Genres
-
+// Renders the list of genres in a dropdown.
 function renderGenres() {
   const genreHtml = document.createDocumentFragment();
   const firstGenreElement = createOptionElement("All Genre", "any");
@@ -51,7 +45,7 @@ function renderGenres() {
   document.querySelector("[data-search-genres]").appendChild(genreHtml);
 }
 
-//Provides the list of Autors
+// Renders the list of authors in a dropdown.
 function renderAuthors() {
   const authorsHtml = document.createDocumentFragment();
   const firstAuthorElement = createOptionElement("All authors", "any");
@@ -64,17 +58,16 @@ function renderAuthors() {
 
   document.querySelector("[data-search-authors]").appendChild(authorsHtml);
 }
-//Dropdown options whe the search button is opened
+
+// Creates an option element for dropdowns.
 function createOptionElement(text, value) {
   const element = document.createElement("option");
   element.value = value;
   element.innerText = text;
   return element;
 }
-createOptionElement();
 
-//Theme setting simplified into ternery operators
-
+// Applies the selected theme to the document.
 function applyTheme(theme) {
   const isDark = theme === "night";
   document.querySelector("[data-settings-theme]").value = theme;
@@ -88,8 +81,7 @@ function applyTheme(theme) {
   );
 }
 
-//Filters that group the books according to title, genre and author to enable to user the search them respectively.
-
+// Filters the books based on the selected filters.
 function filterBooks(books, filters) {
   const filteredBooks = books.filter((book) => {
     let genreMatch = filters.genre === "any";
@@ -112,53 +104,47 @@ function filterBooks(books, filters) {
   return filteredBooks;
 }
 
-//Show more button function
-
+// Updates the "Show more" button based on the number of remaining books.
 function showMore() {
   document.querySelector("[data-list-button]").disabled =
-    matches.length - page * BOOKS_PER_PAGE < 1;//Enables or disables the "Show more" button based on whether there are more books to display.
+    matches.length - page * BOOKS_PER_PAGE < 1;
 
-//Updates the inner HTML of the "Show more" button to display the number of remaining books.
   document.querySelector("[data-list-button]").innerHTML = `
-        <span>Show more</span>
-        <span class="list__remaining"> (${
-          matches.length - page * BOOKS_PER_PAGE > 0
-            ? matches.length - page * BOOKS_PER_PAGE
-            : 0
-        })</span>`;
+    <span>Show more</span>
+    <span class="list__remaining"> (${
+      matches.length - page * BOOKS_PER_PAGE > 0
+        ? matches.length - page * BOOKS_PER_PAGE
+        : 0
+    })</span>`;
 }
 
-
-
-//Event handlers
-
-// Listens out for a "click" on the search cancel button and hides the search overlay
+// Event listeners for various actions on the page.
 document.querySelector("[data-search-cancel]").addEventListener("click", () => {
   document.querySelector("[data-search-overlay]").open = false;
 });
-// Listens out for a "click" on the settings cancel button and hides the settings overlay
+
 document
   .querySelector("[data-settings-cancel]")
   .addEventListener("click", () => {
     document.querySelector("[data-settings-overlay]").open = false;
   });
-// Listens out for a "click" on the search button in the header then shows the search overlay and sets the focus to the search input field
+
 document.querySelector("[data-header-search]").addEventListener("click", () => {
   document.querySelector("[data-search-overlay]").open = true;
   document.querySelector("[data-search-title]").focus();
 });
-// Listens out for a "click" on the settings button in the header and shows the settings overlay
+
 document
   .querySelector("[data-header-settings]")
   .addEventListener("click", () => {
     document.querySelector("[data-settings-overlay]").open = true;
   });
-// Listens out for a "click" on the close button in the list and then hides the active list
+
 document.querySelector("[data-list-close]").addEventListener("click", () => {
   document.querySelector("[data-list-active]").open = false;
 });
 
-//Theme function application: 
+// Applies the selected theme when the settings form is submitted.
 document
   .querySelector("[data-settings-form]")
   .addEventListener("submit", (event) => {
@@ -166,13 +152,10 @@ document
     const formData = new FormData(event.target);
     const { theme } = Object.fromEntries(formData);
     applyTheme(theme);
-    document.querySelector("[data-settings-overlay]").open = false; 
+    document.querySelector("[data-settings-overlay]").open = false;
   });
 
-
-
-//Search submission
-
+// Filters the books based on the search form submission.
 document
   .querySelector("[data-search-form]")
   .addEventListener("submit", (event) => {
@@ -201,8 +184,7 @@ document
     document.querySelector("[data-search-overlay]").open = false;
   });
 
-//Show more button per page
-
+// Loads more books when the "Show more" button is clicked.
 document.querySelector("[data-list-button]").addEventListener("click", () => {
   const fragment = document.createDocumentFragment();
   renderBooks(
@@ -213,6 +195,7 @@ document.querySelector("[data-list-button]").addEventListener("click", () => {
   showMore();
 });
 
+// Displays the book details when a book element is clicked.
 document
   .querySelector("[data-list-items]")
   .addEventListener("click", (event) => {
@@ -247,12 +230,12 @@ document
     }
   });
 
-//Function calls
+// Initial function calls to render books, genres, and authors.
 renderBooks(matches.slice(0, BOOKS_PER_PAGE));
 renderGenres();
 renderAuthors();
 
-//User prefered theme according to device settings.
+// Applies the preferred theme based on the device settings.
 if (
   window.matchMedia &&
   window.matchMedia("(prefers-color-scheme: dark)").matches
